@@ -70,9 +70,9 @@ COLORS = np.random.uniform(0,100, size=(len(CLASSES), 3))
 net = cv2.dnn.readNetFromCaffe("./MobileNetSSD/MobileNetSSD.prototxt","./MobileNetSSD/MobileNetSSD.caffemodel")
 
 
-# initialize video capture object to read video from external webcam
-#video_capture = cv2.VideoCapture(0)
-video_capture = cv2.VideoCapture("Video_1.mp4")
+
+video_capture = cv2.VideoCapture(0)
+#video_capture = cv2.VideoCapture("Video_1.mp4")
 # if there is no external camera then take the built-in camera
 if not video_capture.read()[0]:
     video_capture = cv2.VideoCapture(1)
@@ -86,19 +86,13 @@ cv2.setWindowProperty(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREE
 
 
 while (video_capture.isOpened()):
- # get Screen Size
     user32 = ctypes.windll.user32
     screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
- 
- # read video frame by frame
+    
     ret, frame = video_capture.read()
-
-
     #frame = cv2.flip(frame, 1)
 
-
     frame_height, frame_width, _ = frame.shape
-
 
     scaleWidth = float(screen_width)/float(frame_width)
     scaleHeight = float(screen_height)/float(frame_height)
@@ -119,7 +113,7 @@ while (video_capture.isOpened()):
     if ret:
        
         (h,w) = frame.shape[:2]
-        #ทำpreprocessing
+        # ท ำ preprocessing
        
         blob = cv2.dnn.blobFromImage(frame, 0.007843, (300,300), 127.5)
        
@@ -133,7 +127,7 @@ while (video_capture.isOpened()):
         for i in np.arange(0, detections.shape[2]):
            
             percent = detections[0,0,i,2]
-            #กรองเอาเฉพาะค่าpercentที่สูงกว่า0.5 เพิ่มลดได้ตามต้องการ
+            #กรองเอาเฉพาะค่าpercentที่สูงกว่า 0.5 เพิ่มลดได้ตามต้องการ
            
             if percent > 0.9900:
             #if percent > 0.50:
@@ -159,33 +153,19 @@ while (video_capture.isOpened()):
                 y = startY - 15 if startY-15>15 else startY+15
                
                 cv2.putText(frame, label, (startX+20, y+5), cv2.FONT_HERSHEY_DUPLEX, 0.6, (255,255,255), 1)
-
-
-                """
-                #notify.send(label)
-                img_name = "PICTURE/image_{}.jpg".format(img_counter)
-                cv2.imwrite(img_name, frame)
-                print("{} written!".format(img_name))
-                img_counter += 1
-                """
-                #notify.send(label)
+ 
                 img_name = "PICTURE/image_1.jpg".format(img_counter)
                 cv2.imwrite(img_name, frame)
                 print("{} written!".format(img_name))
                 #img_counter += 1
-
-
-
-
-               
+ 
                 notifying = img_name        # format(img_name)
                 Notify = (" " +  TEXT_Notify)
                 ACCESS_TOKEN = "IUmNdJYFQuetWIZDUlbvOBS5vSjXZvJOAwlT8Zcmd03"
                 notify = LineNotify(ACCESS_TOKEN)
-               # notify.send(Notify)
-                # ส่งข้อความ + ภาพที่อยู่ในโฟลเดอร์เดียวกันนี้
+                 # ส่งข้อความ + ภาพที่อยู่ในโฟลเดอร์เดียวกันนี้
                 notify.send(Notify, notifying)
-                #notify.send("พบ", notifying)
+ 
                 winsound.Beep(frequency, duration)
 
 
