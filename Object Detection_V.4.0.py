@@ -35,7 +35,7 @@ CLASSES = [
     "DOG",
     "HORSE",
     "MOTORBIKE",
-    "PERSON",
+    "HUMAN",
     "POTTEDPLANT",
     "SHEEP",
     "SOFA",
